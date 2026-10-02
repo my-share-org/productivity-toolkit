@@ -14,7 +14,7 @@ This README will serve as a master handbook and decision-routing engine for AI a
 
 ### Strict Formatting Rules
 
-1. DO NOT USE EMOJIS ANYWHERE IN THE DOCUMENT. Emojis make documentation look AI-generated, cluttered, and unprofessional. Use clean markdown typography, bold text, descriptive headings, and well-structured tables.
+1. DO NOT USE EMOJIS ANYWHERE IN THE DOCUMENT. Use clean markdown typography, bold text, descriptive headings, and well-structured tables.
 2. ALL SKILL LINKS MUST BE VALID AND CLICKABLE. Use relative markdown links pointing directly to the skill entry point: `[`skill-name`](./skills/<skill-name>/SKILL.md)` or `[`skill-name`](./<skill-name>/SKILL.md)` depending on the folder layout.
 3. CONCISE BUT COMPLETE. Explain what each skill does, what architectural patterns it teaches, and exact trigger conditions (technologies, file types, keywords, and scenarios).
 4. SOURCE AND UPDATE PROCEDURE MUST BE DOCUMENTED. Always specify where the skills originated (upstream GitHub repository/source) and provide a reproducible update procedure.
