@@ -15,9 +15,10 @@ This README will serve as a master handbook and decision-routing engine for AI a
 ### Strict Formatting Rules
 
 1. DO NOT USE EMOJIS ANYWHERE IN THE DOCUMENT. Use clean markdown typography, bold text, descriptive headings, and well-structured tables.
-2. ALL SKILL LINKS MUST BE VALID AND CLICKABLE. Use relative markdown links pointing directly to the skill entry point: `[`skill-name`](./skills/<skill-name>/SKILL.md)` or `[`skill-name`](./<skill-name>/SKILL.md)` depending on the folder layout.
-3. CONCISE BUT COMPLETE. Explain what each skill does, what architectural patterns it teaches, and exact trigger conditions (technologies, file types, keywords, and scenarios).
-4. SOURCE AND UPDATE PROCEDURE MUST BE DOCUMENTED. Always specify where the skills originated (upstream GitHub repository/source) and provide a reproducible update procedure.
+2. ALL PATHS MUST BE RELATIVE (NO ABSOLUTE PATHS). Whenever referring to any path, file path, or folder path anywhere in the README (including metadata, provenance, scripts, code snippets, and directory references), ALWAYS use a relative path based on the root folder holding the `README.md` and the group of skills (e.g., `./` or `./<skill-name>/`). Never use machine-specific absolute paths (such as `C:/Users/...` or `/home/...`).
+3. ALL SKILL LINKS MUST BE VALID AND CLICKABLE. Use relative markdown links pointing directly to the skill entry point: `[`skill-name`](./skills/<skill-name>/SKILL.md)` or `[`skill-name`](./<skill-name>/SKILL.md)` depending on the folder layout.
+4. CONCISE BUT COMPLETE. Explain what each skill does, what architectural patterns it teaches, and exact trigger conditions (technologies, file types, keywords, and scenarios).
+5. SOURCE AND UPDATE PROCEDURE MUST BE DOCUMENTED. Always specify where the skills originated (upstream GitHub repository/source) and provide a reproducible update procedure with relative paths.
 
 ---
 
@@ -59,15 +60,15 @@ The generated `README.md` must adhere to this exact outline:
      - `source_repository`
      - `source_license`
      - `total_skills`
-     - `skills_location`
+     - `skills_location` (relative path based on the skill group root, e.g. `./` or `./skills`)
      - `coverage`
 
 2. Source and Provenance
-   - Bulleted list with Upstream Repository URL, Project Name, Upstream Branch/Path, and Local Target Path.
+   - Bulleted list with Upstream Repository URL, Project Name, Upstream Branch/Path, and Local Target Path (always relative to the skill group root holding the README, e.g. `./`).
 
 3. Update Procedure for AI Agents and Developers
-   - Automated CLI / Script: A reproducible bash / Python snippet that clones the upstream repository to a temporary folder, identifies new or updated skills, copies them into the local directory, cleans up the temporary clone, and regenerates the README.
-   - Manual Update Steps: Clear numbered steps for manual inspection and syncing from GitHub.
+   - Automated CLI / Script: A reproducible bash / Python snippet that clones the upstream repository to a temporary folder, identifies new or updated skills, copies them into the local directory using relative paths, cleans up the temporary clone, and regenerates the README. All paths in scripts and commands must be relative to the skill group folder.
+   - Manual Update Steps: Clear numbered steps for manual inspection and syncing from GitHub (using relative paths).
 
 4. AI Agent Directive: How to Query This Handbook
    - A deterministic 4-step decision algorithm for AI agents when instructed: *"Please find the proper skill for my task from this repo, from this folder"*:
