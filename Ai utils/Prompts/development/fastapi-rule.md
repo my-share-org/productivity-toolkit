@@ -128,12 +128,15 @@ Two domains are expanded in full purely to make the file-level shape unambiguous
 - Validate with Pydantic field validators for single-field rules, model validators for rules spanning multiple fields.
 - Never include sensitive fields (password hashes, internal flags, raw webhook payloads) in a response schema.
 - Use `ConfigDict(from_attributes=True)` on response schemas so they map cleanly from SQLAlchemy instances.
+- Define a shared Pydantic base schema for common aliases/configuration; use supported alias generators and field/model serializers for consistent camelCase output or types such as `datetime`, `Decimal`, and `ObjectId` where needed. Keep Python names idiomatic and follow the installed Pydantic version.
 
 ## 5. Routers (Endpoints)
 
 - Keep router functions thin: receive the already-validated request, call a service function, return the result through `core/utils/response`. No business logic inside a router function.
 - Use `dependencies.py` for auth/permission checks (`Depends(get_current_user)`, `Depends(require_admin)`) — never a manual check inside the endpoint body.
 - Group related endpoints under one `APIRouter` per domain, with a matching `tags=[...]` for Swagger grouping (see §15).
+- Declare `response_model` when response validation, filtering, and OpenAPI accuracy are required. Return supported dictionaries/lists when appropriate; don't construct a Pydantic response object solely because `response_model` is set. Construct it explicitly when it improves clarity or is otherwise needed.
+- Put reusable database-backed checks (resource existence, ownership, permissions) in dependencies or service-layer authorization helpers, not scattered route checks or Pydantic validators. FastAPI caches dependencies per request by default; use `use_cache=False` only when fresh repeated evaluation is required.
 
 ## 6. Rate Limiting & Throttling
 
@@ -151,6 +154,7 @@ Two domains are expanded in full purely to make the file-level shape unambiguous
 - Wrap any multi-step write in a database transaction so a partial failure can't leave the database inconsistent. Mandatory for any ledger domain (§10B) or external-dispatch domain (§10C), where a request touches more than one table that must succeed or fail together.
 - Use `with_for_update()` inside a transaction for any read-then-write on a row that can be hit concurrently.
 - Configure connection pooling explicitly (SQLAlchemy's `pool_size`/`max_overflow`) — the defaults are rarely right for production load.
+- Create engines/pools during app lifespan, expose shared resources through `app.state` and dependency injection, and release each request's acquired session/connection reliably (`yield` + `finally` or the driver's context manager). Tune pool limits against database capacity and worker count.
 
 ## 8. Error Handling
 
@@ -220,6 +224,7 @@ Real backends keep running into the same handful of domain *shapes*, whatever th
 - Use a non-blocking `QueueHandler` — the same Python `logging` pattern as Django, framework-independent. Log writes go to a queue processed by a separate listener so they never block the request-response cycle.
 - Separate normal application logs from error-level logs.
 - FastAPI middleware attaches request context (request ID, user, path) to every log line automatically.
+- Use explicit log levels and structured fields (prefer JSON in production); configure verbosity by environment and centralize logs when operating multiple instances. Never log secrets or unnecessary sensitive data.
 - Any API exposing raw logs is admin-only.
 
 ## 12. Core Utilities & Shared Foundation
@@ -246,6 +251,7 @@ Real backends keep running into the same handful of domain *shapes*, whatever th
 - Keep `db`/`api` compose files separate, and `local`/`production` compose files separate.
 - CI must run lint and tests on every pull request before merge is allowed.
 - Keep the CI environment's Docker setup close to production's actual setup.
+- For production, choose a supported ASGI server setup (commonly Uvicorn directly or behind a process manager/reverse proxy); configure workers from measured workload, CPU and memory limits rather than blindly applying a formula. Consider `uvloop` only on supported platforms and benchmark before adopting it.
 
 ## 15. Swagger / OpenAPI Documentation Rules
 
@@ -344,7 +350,8 @@ This is the most critical rule for FastAPI performance. Breaking this causes the
 
 - **In `async def` routes:** Code runs directly on the single-threaded asyncio event loop. **NEVER** use blocking synchronous functions inside an `async def` route or inside any function called by it. If you use a synchronous database call (`db.query()`), a synchronous HTTP request (`requests.get()`), or a heavy CPU-bound task, the event loop blocks and the server cannot accept any other requests.
 - **In plain `def` routes:** FastAPI automatically runs these in an external worker threadpool (`anyio.to_thread.run_sync`). Synchronous blocking calls are safe here.
-- **The Rule:** If your logic, dependencies, or database driver is synchronous, you **MUST** define the endpoint as a regular `def`. Only use `async def` if you are using purely asynchronous libraries (`httpx.AsyncClient`, `AsyncSession`, `aiofiles`) or explicitly offloading sync code via `run_in_threadpool`.
+- **The Rule:** If your logic, dependencies, or database driver is synchronous, define the endpoint/dependency as regular `def`, or explicitly offload the blocking call via `run_in_threadpool`. Use `async def` for genuinely non-blocking async workflows (e.g. `asyncio.sleep`, `httpx.AsyncClient`, `AsyncSession`, `aiofiles`); do not call blocking sync utilities directly from an async route.
+- Keep CPU-heavy work (large image/video processing, expensive ML inference, etc.) out of request handlers. Use a process pool or dedicated inference service for suitable workloads, and a durable queue plus worker (e.g. Celery) for long-running jobs; threads do not generally speed up CPU-bound Python code.
 
 ## 21. Common FastAPI Anti-Patterns & Lifecycle Traps
 
@@ -355,7 +362,7 @@ This is the most critical rule for FastAPI performance. Breaking this causes the
 
 **Background Tasks (`BackgroundTasks`) Traps:**
 - **DB Session Crashes (`DetachedInstanceError`):** Never pass a request-scoped database session (`db: Session = Depends(...)`) directly into a `BackgroundTask`. Background tasks run *after* the request finishes and the session is closed via the dependency's `finally` block.
-- **Misusing for Heavy Work:** `BackgroundTasks` runs in-process memory. If the server restarts or crashes, all pending background tasks are instantly lost. Use Celery or Redis-Queue (RQ) for durable, heavy tasks (like mass emails or video processing).
+- **Misusing for Heavy Work:** `BackgroundTasks` runs in-process memory. If the server restarts or crashes, all pending background tasks are instantly lost. Use it only for small, non-critical work; use Celery or Redis-Queue (RQ) for durable, heavy, long-running, retryable, or guaranteed-delivery tasks (e.g. mass emails or video processing).
 - **Silent Failures:** Exceptions thrown inside `BackgroundTasks` do not trigger FastAPI's global exception handler (since the HTTP response was already sent). Wrap their logic in robust `try/except` blocks with explicit logging.
 
 **State & Middleware Gotchas:**
@@ -371,5 +378,3 @@ This is the most critical rule for FastAPI performance. Breaking this causes the
 - **CORS Misconfiguration:** Setting `allow_origins=["*"]` along with `allow_credentials=True` is a security risk and is actively blocked by modern browsers. Be specific with credentialed origins.
 
 ---
-
-*Status: v5 — added §20 (Concurrency & Async Discipline), §21 (Common Anti-Patterns), and verified vulnerabilities in §18.*
