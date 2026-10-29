@@ -1,6 +1,6 @@
 # Frontend structure
 
-> Last verified: Next.js 16, React 19. Read when adding a route, a feature folder, or deciding where a file goes. Pipeline, SSR/CSR, and auth are in `core.md`.
+> Last verified: 2026-10-29 — Next.js 16, React 19. Read when adding a route, a feature folder, or deciding where a file goes. Pipeline, SSR/CSR, and auth are in `core.md`.
 
 ```
 src/

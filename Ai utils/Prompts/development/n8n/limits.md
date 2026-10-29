@@ -1,6 +1,6 @@
 # n8n scale and outbound limits
 
-> Last verified: n8n 1.x. Read when the workflow loops on an external API, runs in production load, or is a scheduled batch.
+> Last verified: 2026-10-29 — n8n 2.45. Read when the workflow loops on an external API, runs in production load, or is a scheduled batch.
 
 - **HTTP Request node:** use its Batching options — Items per Batch and Batch Interval (ms) — sized to the provider's documented limit.
 - **Other nodes** (no Batching option): `Split in Batches` / `Loop Over Items` + `Wait`. Honor `Retry-After` when the provider sends it.

@@ -1,6 +1,6 @@
 # n8n git and backups
 
-> Last verified: n8n 1.x. Read when exporting, changing a live workflow, or taking backups.
+> Last verified: 2026-10-29 — n8n 2.45. Read when exporting, changing a live workflow, or taking backups.
 
 ## Version control
 

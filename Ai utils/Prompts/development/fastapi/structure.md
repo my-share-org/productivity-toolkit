@@ -1,6 +1,6 @@
 # FastAPI structure
 
-> Last verified: FastAPI 0.1xx. Read when creating a domain or deciding where a file goes. Endpoint behavior is in `core.md`.
+> Last verified: 2026-10-29 — FastAPI 0.162. Read when creating a domain or deciding where a file goes. Endpoint behavior is in `core.md`.
 
 `authentication/` and `payments/` show shape only. Neither is mandatory.
 
@@ -56,7 +56,8 @@
 ├── local-api.docker-compose.yml
 ├── production-db.docker-compose.yml
 ├── production-api.docker-compose.yml
-└── uv.lock   # or pyproject.toml + hashed lock; not a floating requirements.txt
+├── pyproject.toml
+└── uv.lock                           # or hashed pip-compile output; not a floating requirements.txt
 ```
 
 - `tests.py` until it exceeds **150 lines** or covers more than one concern; then a `tests/` package.

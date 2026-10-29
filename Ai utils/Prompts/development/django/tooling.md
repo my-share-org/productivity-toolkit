@@ -1,6 +1,6 @@
 # Django tooling
 
-> Last verified: Django 5.x. Read when changing Docker, env, CI, Bruno, lockfile, or project docs.
+> Last verified: 2026-10-29 — Django 5.2 LTS. Read when changing Docker, env, CI, Bruno, lockfile, or project docs.
 
 ## Env, Docker, CI
 

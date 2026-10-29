@@ -1,18 +1,19 @@
 # Backend HTTP contract
 
-> Last verified: Django 5.x, FastAPI 0.1xx. Load with the stack `core.md` when the task is an HTTP API. One home for error shape, status codes, 429, tokens, logs, and the per-dispatch callback token.
+> Last verified: 2026-10-29 — Django 5.2 LTS, FastAPI 0.162. Load with the stack `core.md` when the task is an HTTP API. One home for error shape, status codes, 429, tokens, logs, and the per-dispatch callback token.
 
-Frontend maps `error.code` and `429`. n8n callbacks use the dispatch token below. Stack files do not restated these bullets.
+Frontend maps `error.code`, optional `error.details`, and `429`. n8n callbacks use the dispatch token below. Stack files do not restate these bullets.
 
 ## Errors
 
 Shape, every failure:
 
 ```json
-{ "error": { "code": "...", "message": "..." } }
+{ "error": { "code": "...", "message": "...", "details": [{ "field": "...", "code": "..." }] } }
 ```
 
 - `code` is stable. `message` is generic. Never a stack trace or DB error in the body. Log the detail server-side.
+- `details` is optional. On **422**, include one entry per failed field (`field` + `code`) so the frontend can mark inputs. Omit `details` when there is no field to point at.
 - Status: validation **422**, missing auth **401**, permission **403**, not found **404**, conflict **409**, unhandled **500**.
 - Django: enforce 422 in `core/utils/exception_handler.py` (do not leave DRF's 400 for validation). FastAPI: keep the default 422; do not remap validation to 400.
 - Log every **401**, **403**, and **429**, not only 500s.

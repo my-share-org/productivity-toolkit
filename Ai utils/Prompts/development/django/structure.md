@@ -1,6 +1,6 @@
 # Django structure
 
-> Last verified: Django 5.x. Read when creating an app, adding a module, or deciding where a file goes. Endpoint behavior is in `core.md`.
+> Last verified: 2026-10-29 — Django 5.2 LTS. Read when creating an app, adding a module, or deciding where a file goes. Endpoint behavior is in `core.md`.
 
 Two apps are expanded only to show file shape: `authentication/` (almost every backend needs one) and `payments/` (webhook-driven domain). Neither is mandatory. Build the domains you actually need, in this shape.
 
@@ -68,7 +68,8 @@ Two apps are expanded only to show file shape: `authentication/` (almost every b
 ├── local-api.docker-compose.yml
 ├── production-db.docker-compose.yml
 ├── production-api.docker-compose.yml
-└── uv.lock   # or hashed requirements from pip-compile --generate-hashes; not a floating requirements.txt
+├── pyproject.toml                    # required by uv
+└── uv.lock                           # or hashed output from pip-compile --generate-hashes; not a floating requirements.txt
 ```
 
 - `migrations/`: one file per schema change, applied in order.

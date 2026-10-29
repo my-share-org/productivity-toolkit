@@ -1,6 +1,6 @@
 # n8n domain patterns
 
-> Last verified: n8n 1.x. Read only when the workflow has this shape. HMAC and webhook auth: `core.md`. Callback token: `../backend/contract.md`. Pattern C on the backend: `../backend/domain-patterns.md`.
+> Last verified: 2026-10-29 — n8n 2.45. Read only when the workflow has this shape. HMAC and webhook auth: `core.md`. Callback token: `../backend/contract.md`. Pattern C on the backend: `../backend/domain-patterns.md`.
 
 ## A. Inbound webhook (payment provider, CRM, git host)
 

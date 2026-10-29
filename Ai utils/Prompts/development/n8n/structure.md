@@ -1,6 +1,6 @@
 # n8n backup store
 
-> Last verified: n8n 1.x. Read when placing or naming workflow backup JSON.
+> Last verified: 2026-10-29 — n8n 2.45. Read when placing or naming workflow backup JSON.
 
 ```
 backups/

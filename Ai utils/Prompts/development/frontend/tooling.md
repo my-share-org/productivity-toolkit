@@ -1,6 +1,6 @@
 # Frontend tooling
 
-> Last verified: Next.js 16, React 19. Read when changing env, security headers, styling, animation, or performance.
+> Last verified: 2026-10-29 — Next.js 16, React 19. Read when changing env, security headers, styling, animation, or performance.
 
 CI: lint + tests + `npm audit` (or `pnpm audit`) on every PR. Lockfile: `package-lock.json` / `pnpm-lock.yaml` — pin exact versions (`global.md`).
 

@@ -1,6 +1,6 @@
 # Django core
 
-> Last verified: Django 5.x, DRF 3.15. Always loaded with `global.md`. Also read `../backend/contract.md` (error shape, 422, 429, tokens, logs). This is a rulebook, not one running app. `authentication/` and `payments/` in `structure.md` show file shape — they are not required apps. Replace `<project_name>/` with the real config package.
+> Last verified: 2026-10-29 — Django 5.2 LTS, DRF 3.15. Always loaded with `global.md`. Also read `../backend/contract.md` (error shape, 422, 429, tokens, logs). This is a rulebook, not one running app. `authentication/` and `payments/` in `structure.md` show file shape — they are not required apps. Replace `<project_name>/` with the real config package.
 
 **Read a recipe before you write if the task matches.** Several matches: read all of them. Do not open a recipe the task does not match.
 

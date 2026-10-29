@@ -1,6 +1,6 @@
 # n8n core
 
-> Last verified: n8n 1.x. Always loaded with `global.md`. When this workflow is the other end of a backend dispatch, also read `../backend/contract.md` (callback token) and `../backend/domain-patterns.md` pattern C.
+> Last verified: 2026-10-29 — n8n 2.45. Always loaded with `global.md`. When this workflow is the other end of a backend dispatch, also read `../backend/contract.md` (callback token) and `../backend/domain-patterns.md` pattern C.
 
 **Read a recipe before you write if the task matches.** Several matches: read all of them. Do not open a recipe the task does not match.
 
@@ -33,7 +33,7 @@
 - One least-privilege credential per integration. At scale: Vault / AWS Secrets Manager.
 - Before export/share/git: check JSON for a hardcoded key. Default Webhook auth is **none** — allowed locally, never in production.
 - At least two layers: (1) Webhook Header/JWT auth (Basic only over HTTPS, low-sensitivity internal), (2) HMAC in a `Code` node, (3) IP allowlist at the proxy when ranges are known.
-- HMAC setup: turn **Raw Body** on in the Webhook node. Hash the raw body, not re-serialized JSON. Timing-safe compare + timestamp anti-replay. On self-hosted n8n, set `NODE_FUNCTION_ALLOW_BUILTIN=crypto` so the Code node may `require('crypto')`.
+- HMAC setup: turn **Raw Body** on in the Webhook node. Hash the raw body, not re-serialized JSON. Timing-safe compare + timestamp anti-replay. On self-hosted n8n, set `NODE_FUNCTION_ALLOW_BUILTIN=crypto` so the Code node may `require('crypto')`. With external task runners, set `crypto` in the runners config file (`/etc/n8n-task-runners.json` env-override), not the container env — the container env is silently ignored.
 - Verify before any expensive node. Ack `200`/`202` fast, then process async — slow responses cause provider retries. Webhook URLs are secrets; rotate them. Keep webhook intake off the editor network when you can.
 
 ## Errors and validation

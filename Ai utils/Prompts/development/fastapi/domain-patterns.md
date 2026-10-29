@@ -1,6 +1,6 @@
 # FastAPI domain patterns (syntax)
 
-> Last verified: FastAPI 0.1xx. Load with `../backend/domain-patterns.md`. This file is only the FastAPI API names.
+> Last verified: 2026-10-29 — FastAPI 0.162. Load with `../backend/domain-patterns.md`. This file is only the FastAPI API names.
 
 - Ledger lock: transaction + `with_for_update()`.
 - Admin dashboards: `Depends(require_admin)`.

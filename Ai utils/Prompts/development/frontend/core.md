@@ -1,6 +1,6 @@
 # Frontend core (React / Next.js)
 
-> Last verified: Next.js 16, React 19. Always loaded with `global.md`. Feature folders match backend domains you actually have — `auth/` in `structure.md` is the expanded example, not a required list.
+> Last verified: 2026-10-29 — Next.js 16, React 19. Always loaded with `global.md`. Feature folders match backend domains you actually have — `auth/` in `structure.md` is the expanded example, not a required list.
 
 **Read a recipe before you write if the task matches.** Several matches: read all of them. Do not open a recipe the task does not match.
 
@@ -80,7 +80,7 @@ If rendered data is wrong, the bug is in `mappers/` or `hooks/`, not a component
 - Silent 429: do not throw. Honor `Retry-After` exactly, keep last cached data, one retry. No "rate limited" toast. Visible 429: show the message, never auto-retry.
 - Page-number: query keyed by page, `placeholderData: keepPreviousData`, dim via `isPlaceholderData` — do not unmount the list.
 - Infinite: `useInfiniteQuery`. Sentinel at **80%** of loaded content (item 40 of a 50-item page), then `fetchNextPage()`. Prefetch at most one page ahead.
-- `lib/api-client.ts` normalizes errors to `{ status, message, code }` except silent 429. Validation is **422** (`../backend/contract.md`). `error.tsx` for unexpected; React Query `error` for recoverable. Map `code` to friendly text — never a raw backend string.
+- `lib/api-client.ts` normalizes errors to `{ status, message, code, details }` except silent 429. Keep `details` (field + code list) so forms can mark inputs. Validation is **422** (`../backend/contract.md`). `error.tsx` for unexpected; React Query `error` for recoverable. Map `code` to friendly text — never a raw backend string.
 
 ## Before you write
 

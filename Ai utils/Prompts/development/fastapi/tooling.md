@@ -1,6 +1,6 @@
 # FastAPI tooling
 
-> Last verified: FastAPI 0.1xx. Read when changing Docker, env, CI, OpenAPI, lockfile, or project docs.
+> Last verified: 2026-10-29 — FastAPI 0.162. Read when changing Docker, env, CI, OpenAPI, lockfile, or project docs.
 
 ## Env, Docker, CI
 
@@ -19,7 +19,6 @@
 FastAPI builds `/docs` and `/redoc` from routers and schemas. Empty metadata is a miss.
 
 - `tags` audience-first: `"Admin - Payments"`, `"User - Leads"`, `"Public - Auth"`.
-- Every route: `summary`, `description` (or docstring) with permissions and non-obvious behavior, `response_model`, `responses={...}` for every non-200 with an example body. Field constraints on schemas (`max_length`, `ge`, …).
+- Every route: `summary`, `description` (or docstring) with permissions and non-obvious behavior, `response_model`, `responses={...}` for every non-200 with an example body. Field constraints on schemas (`max_length`, `ge`, …). Update those four in the same commit as the behavior change.
 - Public: no security dependency. User: `Depends(get_current_user)` on the router. Admin: `Depends(require_admin)`. Two OpenAPI schemes (`UserAuth`, `AdminAuth`). Never a real token in an example.
-- Every route sets `response_model`. Update `summary` / `description` / `response_model` / `responses` in the same commit as the behavior change.
 - Production `/docs` protection: `../backend/contract.md`.

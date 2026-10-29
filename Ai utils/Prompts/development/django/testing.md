@@ -1,6 +1,6 @@
 # Django testing
 
-> Last verified: Django 5.x. `core.md` is already loaded. Webhooks/ledgers: also `domain-patterns.md`.
+> Last verified: 2026-10-29 — Django 5.2 LTS. `core.md` is already loaded. Webhooks/ledgers: also `domain-patterns.md`.
 
 - Runner: **pytest** + `pytest-django`. Factories: **factory_boy** (or model-bakery). No raw `Model.objects.create(...)` sprawl in tests.
 - Each app: `tests.py` until that file exceeds **150 lines** or covers more than one concern; then a `tests/` package (`structure.md`).

@@ -1,6 +1,6 @@
 # FastAPI background jobs (Celery)
 
-> Last verified: FastAPI 0.1xx. Read when adding or changing a task or beat schedule. This is the home for "email is a Celery task".
+> Last verified: 2026-10-29 — FastAPI 0.162. Read when adding or changing a task or beat schedule. This is the home for "email is a Celery task".
 
 - `project_config/celery.py` is the only Celery app. Beat schedules: `project_config/configs/celery_schedules.py`.
 - Task functions live in the domain that owns them.

@@ -1,6 +1,6 @@
 # Frontend testing
 
-> Last verified: Next.js 16, React 19, Vitest. `core.md` is already loaded.
+> Last verified: 2026-10-29 — Next.js 16, React 19, Vitest. `core.md` is already loaded.
 
 - Unit: **Vitest**. Mapper tests are the cheapest high-value tests (`mappers/` are pure).
 - Component/hook: mock `api/` with **MSW**. Do not scatter `fetch` mocks.

@@ -1,6 +1,6 @@
 # Frontend domain patterns
 
-> Last verified: Next.js 16. Read only when the project has this shape. Do not add a feature because this file exists.
+> Last verified: 2026-10-29 — Next.js 16. Read only when the project has this shape. Do not add a feature because this file exists.
 
 ## A. Payments / billing
 

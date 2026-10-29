@@ -1,6 +1,6 @@
 # Django background jobs (Celery)
 
-> Last verified: Django 5.x. Read when adding or changing a task or beat schedule. This is the home for "email is a Celery task".
+> Last verified: 2026-10-29 — Django 5.2 LTS. Read when adding or changing a task or beat schedule. This is the home for "email is a Celery task".
 
 - `<project_name>/celery.py` is the only Celery app. All beat schedules live in `<project_name>/configs/celery_schedules.py` — do not scatter them.
 - Task functions live in the app that owns them.

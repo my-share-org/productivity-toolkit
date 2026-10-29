@@ -1,6 +1,6 @@
 # Backend domain patterns
 
-> Last verified: Django 5.x, FastAPI 0.1xx. Load when the task is payments, ledgers, callbacks, dashboards, metering, or debug routes. Do not create a domain because this file exists.
+> Last verified: 2026-10-29 — Django 5.2 LTS, FastAPI 0.162. Load when the task is payments, ledgers, callbacks, dashboards, metering, or debug routes. Do not create a domain because this file exists.
 
 Syntax (locks, Depends, `check --deploy`) lives in the stack `domain-patterns.md`. This file is the contract.
 
@@ -36,5 +36,5 @@ Syntax (locks, Depends, `check --deploy`) lives in the stack `domain-patterns.md
 ## F. Dev-only / debug routes
 
 - Conditional include when env is non-production. Convention is not a guard.
-- A custom Django/FastAPI system check must **error** if those routes would load under a production-configured env. Do not rely on `check --deploy` alone — it does not know your debug URLs.
+- Django: a custom system check must **error** if those routes would load under a production-configured env. FastAPI: a startup assertion in `lifespan` / `main.py` must fail the same way. Do not rely on `check --deploy` alone — it does not know your debug URLs, and FastAPI has no system checks.
 - Dev-only still uses real credentials if it touches a real service.

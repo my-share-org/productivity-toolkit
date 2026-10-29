@@ -1,6 +1,6 @@
 # FastAPI core
 
-> Last verified: FastAPI 0.1xx, Pydantic v2, SQLAlchemy 2. Always loaded with `global.md`. Also read `../backend/contract.md`. Folders in `structure.md` show shape, not a required domain list.
+> Last verified: 2026-10-29 — FastAPI 0.162, Pydantic v2, SQLAlchemy 2. Always loaded with `global.md`. Also read `../backend/contract.md`. Folders in `structure.md` show shape, not a required domain list.
 
 FastAPI does not ship throttling, permission classes, managers, or management commands. `Depends()` is manual. Rate limits need a library (e.g. `slowapi`) or a Redis `Depends()`. Do not assume Django parity.
 
