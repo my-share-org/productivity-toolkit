@@ -16,23 +16,23 @@ FastAPI does not ship throttling, permission classes, managers, or management co
 
 | Django | FastAPI |
 |---|---|
-| `app/v1/urls.py` + `views.py` | `app/v1/routers.py` |
-| `app/v1/serializers.py` | `app/v1/schemas.py` |
+| `apps/<domain>/v1/urls.py` + `views.py` | `apps/<domain>/v1/routers.py` |
+| `apps/<domain>/v1/serializers.py` | `apps/<domain>/v1/schemas.py` |
 | `<project_name>/urls_v1.py` | `project_config/api_v1.py` |
 | `permission_classes` | `dependencies.py` (`Depends(...)`) |
 | `throttles.py` | `slowapi` or Redis `Depends()` |
-| `settings.py` + `env_config.py` | `settings.py` (`BaseSettings`) — reads and validates |
-| `migrations/` per app | one `alembic/versions/` at project root |
-| `signals.py` / `apps.py` / `managers/` | none — call side effects from the service; domain is a plain package |
+| `settings.py` + `env_config.py` | `project_config/settings.py` (`BaseSettings`) — reads and validates |
+| `migrations/` per app | one `alembic/versions/` at the repository root, not inside `apps/` |
+| `AppConfig` / `signals.py` / `managers/` | none — no app label; a domain is a plain package under `apps/` |
 
 ## Where code lives
 
-- One folder per domain. Logic in `services/` (split files). Routers stay thin: validated request → service → `core/utils/response`.
+- One package per domain, under `apps/` (see `structure.md`). Logic in `services/` (split files). Routers stay thin: validated request → service → `apps.core.utils.response`.
 - `dependencies.py` next to the domain that owns auth — not one giant file. `services/admin.py` is admin-triggered logic, not a Django admin site (optional SQLAdmin in `main.py`).
 - No signals. Call the side-effect from the service that triggers it.
 - Writes: do not import another domain's models; call its `services/`. Exception: read-only reporting may use string FKs and query those tables; still no writes except through the owner.
-- Check `core/utils/` first: `response.py`, `exception_handlers.py`, `pagination.py`, `permissions.py`, `filtering.py`, validators, generators, decorators, query, image.
-- One Redis client: `core/cache/redis_client`. Health in `core/health/`, aggregated in `core/services/`.
+- Check `apps/core/utils/` first: `response.py`, `exception_handlers.py`, `pagination.py`, `permissions.py`, `filtering.py`, validators, generators, decorators, query, image.
+- One Redis client: `apps/core/cache/redis_client`. Health in `apps/core/health/`, aggregated in `apps/core/services/`.
 
 ## API
 
@@ -45,9 +45,9 @@ FastAPI does not ship throttling, permission classes, managers, or management co
 
 ## Models and queries
 
-- Every model inherits `core.models.BaseModel` (soft delete). Default queries exclude soft-deleted rows. Models = tables; logic in `services/`. Index FKs and hot columns.
+- Every model inherits `apps.core.models.BaseModel` (soft delete). Default queries exclude soft-deleted rows. Models = tables; logic in `services/`. Index FKs and hot columns.
 - Schema change: Alembic in `alembic/versions/`. Read the generated file before applying.
-- N+1: `joinedload` / `selectinload`. Lists: `core/utils/pagination.py`. Multi-table writes: a transaction. Concurrent read-then-write: `with_for_update()`.
+- N+1: `joinedload` / `selectinload`. Lists: `apps/core/utils/pagination.py`. Multi-table writes: a transaction. Concurrent read-then-write: `with_for_update()`.
 - Create engines/pools in lifespan, expose via `app.state` + DI, release the request session in `yield`/`finally`. Tune `pool_size` / `max_overflow`.
 
 ## Throttles and auth
